@@ -1,14 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
 Console.WriteLine("Hello, World!");
+
+string APIKey =  "";
 
 async Task TestChat()
 {
   Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
   {
-    APIKey = ""
+    APIKey = APIKey
   };
 
-  Zhipu4.ChatRequest req = new Zhipu4.ChatRequest
+  Zhipu4.ChatRequest<Zhipu4.ChatMessage> req = new Zhipu4.ChatRequest<Zhipu4.ChatMessage>
   {
     messages = new List<Zhipu4.ChatMessage>{
       new Zhipu4.ChatMessage{
@@ -26,10 +29,10 @@ async Task TestChatStream()
 
   Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
   {
-    APIKey = ""
+    APIKey = APIKey
   };
 
-  Zhipu4.ChatRequest req = new Zhipu4.ChatRequest
+  Zhipu4.ChatRequest<Zhipu4.ChatMessage> req = new Zhipu4.ChatRequest<Zhipu4.ChatMessage>
   {
     messages = new List<Zhipu4.ChatMessage>{
       new Zhipu4.ChatMessage{
@@ -47,7 +50,7 @@ async Task TestImageGen()
 {
   Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
   {
-    APIKey = ""
+    APIKey = APIKey
   };
 
   Zhipu4.ImageRequest req = new Zhipu4.ImageRequest
@@ -62,10 +65,10 @@ async Task TestChatCharacter()
 {
   Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
   {
-    APIKey = ""
+    APIKey = APIKey
   };
 
-  Zhipu4.ChatRequest req = new Zhipu4.ChatRequest
+  Zhipu4.ChatRequest<Zhipu4.ChatMessage> req = new Zhipu4.ChatRequest<Zhipu4.ChatMessage>
   {
     model = "charglm-3",
     messages = new List<Zhipu4.ChatMessage>{
@@ -87,7 +90,46 @@ async Task TestChatCharacter()
     Console.WriteLine(rep.choices[0].delta?.content);
   }
 }
+async Task TestChatVision()
+{
+
+  Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
+  {
+    APIKey = APIKey
+  };
+
+  Zhipu4.ChatRequest<Zhipu4.VisionMessage> req = new Zhipu4.ChatRequest<Zhipu4.VisionMessage>
+  {
+    model = "glm-4v",
+    messages = new List<Zhipu4.VisionMessage>{
+      new Zhipu4.VisionMessage{
+        role = "user",
+        content = new List<Zhipu4.ChatVisionContent>{
+          new Zhipu4.ChatVisionContent{
+            type = "text",
+            text = "描述一下图片内容"
+          },
+          new Zhipu4.ChatVisionContent{
+            type = "image_url",
+            image_url = new Zhipu4.ImageInfo{
+              url = "http://e.hiphotos.baidu.com/image/pic/item/a1ec08fa513d2697e542494057fbb2fb4316d81e.jpg"
+            }
+          }
+        }
+      }
+    }
+  };
+  await foreach (Zhipu4.ChatResponse rep in chat.ChatStream(req))
+  {
+    Console.WriteLine(rep.choices[0].delta?.content);
+  }
+}
 //await TestChat();
+//Console.WriteLine(" - - - ");
 //await TestChatStream();
+//Console.WriteLine(" - - - ");
 //await TestImageGen();
-await TestChatCharacter();
+//Console.WriteLine(" - - - ");
+//await TestChatCharacter();
+//Console.WriteLine(" - - - ");
+await TestChatVision();

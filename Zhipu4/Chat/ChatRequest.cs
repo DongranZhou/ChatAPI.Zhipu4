@@ -1,10 +1,10 @@
 ﻿
 namespace Zhipu4
 {
-    public class ChatRequest
+    public class ChatRequest<T>
     {
         public string model { get; set; } = "glm-4";
-        public List<ChatMessage> messages { get; set; } = new List<ChatMessage>();
+        public List<T> messages { get; set; } = new List<T>();
         public string request_id { get; set; }
         public bool? do_sample { get; set; }
         public bool? stream { get; set; }

@@ -55,7 +55,7 @@ namespace Zhipu4
                 return new EmbeddingResponse();
             }
         }
-        public async Task<ChatResponse> Chat(ChatRequest req, CancellationToken cancellationToken = new CancellationToken())
+        public async Task<ChatResponse> Chat<T>(ChatRequest<T> req, CancellationToken cancellationToken = new CancellationToken())
         {
             using (HttpClient client = new HttpClient())
             {
@@ -78,7 +78,7 @@ namespace Zhipu4
                 throw new Exception(httpResponse.ToString());
             }
         }
-        public async IAsyncEnumerable<ChatResponse> ChatStream(ChatRequest req, CancellationToken cancellationToken = new CancellationToken())
+        public async IAsyncEnumerable<ChatResponse> ChatStream<T>(ChatRequest<T> req, CancellationToken cancellationToken = new CancellationToken())
         {
             using (HttpClient client = new HttpClient())
             {

@@ -93,3 +93,38 @@
   await foreach (Zhipu4.ChatResponse rep in chat.ChatStream(req))
     Console.WriteLine(rep.choices[0].delta?.content);
 ```
+
+### 图像对话
+
+```csharp
+  Zhipu4.ChatAPI chat = new Zhipu4.ChatAPI
+  {
+    APIKey = APIKey
+  };
+
+  Zhipu4.ChatRequest<Zhipu4.VisionMessage> req = new Zhipu4.ChatRequest<Zhipu4.VisionMessage>
+  {
+    model = "glm-4v",
+    messages = new List<Zhipu4.VisionMessage>{
+      new Zhipu4.VisionMessage{
+        role = "user",
+        content = new List<Zhipu4.ChatVisionContent>{
+          new Zhipu4.ChatVisionContent{
+            type = "text",
+            text = "描述一下图片内容"
+          },
+          new Zhipu4.ChatVisionContent{
+            type = "image_url",
+            image_url = new Zhipu4.ImageInfo{
+              url = "http://***/***.jpg"
+            }
+          }
+        }
+      }
+    }
+  };
+  await foreach (Zhipu4.ChatResponse rep in chat.ChatStream(req))
+  {
+    Console.WriteLine(rep.choices[0].delta?.content);
+  }
+```
