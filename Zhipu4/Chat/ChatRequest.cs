@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Zhipu4
 {
     public class ChatRequest<T>

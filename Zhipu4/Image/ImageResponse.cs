@@ -1,4 +1,6 @@
-﻿namespace Zhipu4
+﻿using System.Collections.Generic;
+
+namespace Zhipu4
 {
   public class ImageResponse
   {

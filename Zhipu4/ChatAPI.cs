@@ -1,6 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Zhipu4
@@ -48,7 +54,7 @@ namespace Zhipu4
                 {
                     if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        var response = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+                        var response = await httpResponse.Content.ReadAsStringAsync();
                         return DeserializeObject<EmbeddingResponse>(response);
                     }
                 }
@@ -72,7 +78,7 @@ namespace Zhipu4
                 HttpResponseMessage httpResponse = await client.PostAsync(url, content, cancellationToken);
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    string str = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+                    string str = await httpResponse.Content.ReadAsStringAsync();
                     return DeserializeObject<ChatResponse>(str);
                 }
                 throw new Exception(httpResponse.ToString());
@@ -98,7 +104,7 @@ namespace Zhipu4
                 {
                     if (httpResponse.IsSuccessStatusCode)
                     {
-                        using (var responseStream = await httpResponse.Content.ReadAsStreamAsync(cancellationToken))
+                        using (var responseStream = await httpResponse.Content.ReadAsStreamAsync())
                         {
                             if (responseStream.CanRead)
                             {
@@ -148,7 +154,7 @@ namespace Zhipu4
                 HttpResponseMessage httpResponse = await client.PostAsync(url, content, cancellationToken);
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    string str = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+                    string str = await httpResponse.Content.ReadAsStringAsync();
                     return DeserializeObject<ImageResponse>(str);
                 }
                 throw new Exception(httpResponse.ToString());
